@@ -47,7 +47,7 @@ them with 4 **rocks** (**o**).
 with radiation canisters (too good for 'em!).
 
 5) Destroying the radiation **canisters** (**O**) by feeding them to
-the deadly Chompers (**X**). 
+the deadly **chompers** (**X**). 
 
 Each level has a password (in yellow, at the top of the screen) which
 may be used in future games to skip the previous screens (**fudge -p
