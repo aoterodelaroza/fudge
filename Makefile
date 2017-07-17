@@ -1,7 +1,7 @@
 FC=gfortran
 FCFLAGS=-g -fcheck=all -fbounds-check -ffpe-trap=invalid -fbacktrace -fdump-core -ffree-line-length-0 -cpp 
-#LDFLAGS=-lncurses -lgfortran # dynamic
-LDFLAGS=-static -lncurses -ltinfo -lgpm -lgfortran # static
+LDFLAGS=-lncurses -lgfortran # dynamic
+#LDFLAGS=-static -lncurses -ltinfo -lgpm -lgfortran # static
 OBJS=ncurses.o global.o levelmod.o fudge.o
 
 %.o: %.f90
