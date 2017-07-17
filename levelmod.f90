@@ -345,7 +345,7 @@ contains
   logical function isbeaten(l)
     class(level), intent(in) :: l
 
-    integer :: i
+    integer :: i, j
 
     isbeaten = all(l%map /= c_earth .and. l%map /= c_crystal)
     do i = 1, l%nnpc
@@ -354,9 +354,17 @@ contains
           l%npc(i)%typ == c_bomb)
     end do
     if (any(l%map == c_hole)) then
-       where (l%map == c_hole)
-          isbeaten = isbeaten .and. (l%mapobj == c_rock)
-       end where
+       outer: do i = 1, size(l%map,1)
+          do j = 1, size(l%map,2)
+             if (.not.(l%map(i,j) == c_hole)) cycle
+             if (l%mapobj(i,j) > 0) then
+                isbeaten = isbeaten .and. l%npc(l%mapobj(i,j))%typ == c_rock
+             else
+                isbeaten = .false.
+                exit outer
+             end if
+          end do
+       end do outer
     end if
     isbeaten = isbeaten .and.all(l%spr(1:l%nspr)%typ /= spr_explosion)
 
