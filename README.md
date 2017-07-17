@@ -33,7 +33,7 @@ home planet, Stacia, is on the brink of disaster. So Fudge, being very
 environmentally-aware, sets forth on a quest to cleanse the planet and
 finally rid it of the perpetrators of this thoughtless deed, the
 greedy and selfish Naggons. But what can one Fudge do against the evil
-hordes. Fudge must journey through levels, making each one safe by:
+hordes? Fudge must journey through levels, making each one safe by:
 
 1) Clearing up all the **radioactive earth** (**~**).
 
@@ -43,7 +43,7 @@ Fudge valuable extra time).
 3) De-fusing the **bombs** (**B**) left by the Naggons, by surrounding
 them with 4 **rocks** (**o**).
 
-4) Killing any **Naggons** (**N**) lurking about, by surrounding them
+4) Killing any **naggons** (**N**) lurking about, by surrounding them
 with radiation canisters (too good for 'em!).
 
 5) Destroying the radiation **canisters** (**O**) by feeding them to

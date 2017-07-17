@@ -103,7 +103,7 @@ contains
     integer, intent(out) :: iexit
     
     integer*8 :: irate, imax, ilast, icur
-    integer :: ich, ich0
+    integer :: ich, ich0, istat
 
     iexit = 0
     call system_clock(count_rate=irate,count_max=imax)
@@ -126,6 +126,7 @@ contains
        call l%update_player(ich)
        call l%update_npcs()
        call l%render()
+       istat = refresh()
        if (ich == ichar('q')) then
           iexit = iexit_userexit
        elseif (ich == ichar('r')) then
@@ -394,8 +395,6 @@ contains
     do i = 1, l%nnpc
        call l%npc(i)%render()
     end do
-
-    istat = refresh()
 
     call cstring(l%title,msg)
     istat = attrset(A_BOLD)
