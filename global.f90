@@ -60,6 +60,7 @@ module global
   integer, parameter :: c_naggon = 24     ! naggon (N)
   integer, parameter :: c_canister = 25   ! canister (O)
   integer, parameter :: c_bomb = 26       ! bomb (B)
+  integer, parameter :: c_hole = 27       ! rock hole (+)
 
   integer(c_short), parameter :: col_white_black = 1
   integer(c_short), parameter :: col_yellow_black = 2
@@ -72,22 +73,22 @@ module global
   integer(c_short), parameter :: col_blue_blue = 9
   integer(c_short), parameter :: col_red_red = 10
 
-  character(len=1), parameter :: symbol(26) = (/" ","#","@","X","o",&
+  character(len=1), parameter :: symbol(27) = (/" ","#","@","X","o",&
      "<",">","^","v","0","1","2","3","4","5","6","7","8","9","/","\",& ! " 
-     "~","%","N","O","B"/) 
-  integer(kind=c_short), parameter :: symcol(26) = (/&
+     "~","%","N","O","B","+"/) 
+  integer(kind=c_short), parameter :: symcol(27) = (/&
      col_white_black,col_white_black,col_magenta_black,col_red_black,&
      col_cyan_black,col_blue_black,col_blue_black,col_blue_black,col_blue_black,&
      col_white_green,col_white_green,col_white_green,col_white_green,&
      col_white_green,col_white_green,col_white_green,col_white_green,&
      col_white_green,col_white_green,col_white_black,col_white_black,&
      col_red_black,col_magenta_black,col_green_black,col_yellow_black,&
-     col_red_black/)
+     col_red_black,col_green_black/)
 
-  integer(kind=c_long), parameter :: symatt(26) = (/A_NORMAL,A_NORMAL,A_BOLD,&
+  integer(kind=c_long), parameter :: symatt(27) = (/A_NORMAL,A_NORMAL,A_BOLD,&
      A_BOLD,A_BOLD,A_BOLD,A_BOLD,A_BOLD,A_BOLD,A_BOLD,A_BOLD,A_BOLD,A_BOLD,&
      A_BOLD,A_BOLD,A_BOLD,A_BOLD,A_BOLD,A_BOLD,A_NORMAL,A_NORMAL,A_BOLD,&
-     A_BOLD,A_BOLD,A_BOLD,A_BOLD/)
+     A_BOLD,A_BOLD,A_BOLD,A_BOLD,A_NORMAL/)
 
   integer, parameter :: mov_up = KEY_UP
   integer, parameter :: mov_down = KEY_DOWN
@@ -289,6 +290,15 @@ contains
     istat = mvinsstr(y,x,c_loc(msg))
     call normalfont()
     call cstring(" - Corner: you can push canisters around corners.",msg)
+    istat = mvinsstr(y,x+1,c_loc(msg))
+
+    y = y + 2
+    call cstring(symbol(c_hole),msg)
+    istat = attrset(symatt(c_hole))
+    istat = color_set(symcol(c_hole),c_null_ptr)
+    istat = mvinsstr(y,x,c_loc(msg))
+    call normalfont()
+    call cstring(" - Hole: push rocks onto holes (sokoban mode).",msg)
     istat = mvinsstr(y,x+1,c_loc(msg))
 
   contains

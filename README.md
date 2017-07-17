@@ -84,3 +84,17 @@ terminal output). For instance, a simple level is:
 There are no limitations regarding the size of the level or the number
 of objects in it.
 
+### Sokoban mode
+
+Fudge can double as a sokoban game. To beat a sokoban level, rocks
+must be moved onto all **+** symbols in the map. Try the first level
+in classic sokoban by doing:
+
+  ```
+  fudge -f sokoban-1.lvl
+  ```
+
+More sokoban levels can be obtained from
+[sokoban.org](http://www.sokoban.org) or from [Jonathan Schaeffer's
+webpage at the the UofA](https://webdocs.cs.ualberta.ca/~games/Sokoban/). 
+

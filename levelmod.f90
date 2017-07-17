@@ -300,6 +300,8 @@ contains
           end if
           l%map(nnx,nny) = c_empty
           l%mapobj(nnx,nny) = nobj
+       case("+")
+          l%map(nnx,nny) = c_hole
        case default
           l%errmsg = "unknown symbol"
           goto 99
@@ -351,6 +353,11 @@ contains
           l%npc(i)%typ == c_naggon.or.l%npc(i)%typ == c_canister.or.&
           l%npc(i)%typ == c_bomb)
     end do
+    if (any(l%map == c_hole)) then
+       where (l%map == c_hole)
+          isbeaten = isbeaten .and. (l%mapobj == c_rock)
+       end where
+    end if
     isbeaten = isbeaten .and.all(l%spr(1:l%nspr)%typ /= spr_explosion)
 
   end function isbeaten
@@ -390,10 +397,10 @@ contains
        call l%spr(i)%render()
     end do
 
-    call l%pl%render()
+    call l%pl%render(l)
 
     do i = 1, l%nnpc
-       call l%npc(i)%render()
+       call l%npc(i)%render(l)
     end do
 
     call cstring(l%title,msg)
@@ -590,8 +597,9 @@ contains
 
   end subroutine render_sprite
 
-  subroutine render_char(ch)
+  subroutine render_char(ch,l)
     class(char), intent(in) :: ch
+    type(level), intent(in) :: l
 
     integer :: id, istat
 
@@ -599,8 +607,13 @@ contains
 
     id = ch%typ
     if (id == 0) return
-    istat = attrset(symatt(id))
-    istat = color_set(symcol(id),c_null_ptr)
+    if (id == c_rock .and. l%map(ch%x,ch%y) == c_hole) then
+       istat = attrset(symatt(c_hole))
+       istat = color_set(symcol(c_hole),c_null_ptr)
+    else
+       istat = attrset(symatt(id))
+       istat = color_set(symcol(id),c_null_ptr)
+    end if
     c = (/symbol(id),c_null_char/)
     istat = mvaddstr(dyg+ch%y,dxg+ch%x,c_loc(c))
 
@@ -645,7 +658,7 @@ contains
        ityp1 = c_player
     end if
 
-    if (ityp1 == c_empty) then
+    if (ityp1 == c_empty .or. ityp1 == c_hole) then
        ok = .true.
     elseif (ityp0 == c_player .and. ityp1 == c_arrowl) then
        ok = (dir /= mov_right)
@@ -677,45 +690,45 @@ contains
        ok = l%npc(iobj1)%push(l,dir)
     elseif (ityp0 == c_canister .and. ityp1 == c_cornerup) then
        if (dir == mov_up) then
-          ok = (l%map(nx0+1,ny0) == c_empty).and.(l%mapobj(nx0+1,ny0) == 0)
-          ok = ok .and. (l%map(nx0+1,ny0-1) == c_empty).and.(l%mapobj(nx0+1,ny0-1) == 0)
+          ok = (l%map(nx0+1,ny0) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0+1,ny0) == 0)
+          ok = ok .and. (l%map(nx0+1,ny0-1) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0+1,ny0-1) == 0)
           nx1 = nx0 + 1
           ny1 = ny0 - 1
        elseif (dir == mov_down) then
-          ok = (l%map(nx0-1,ny0) == c_empty).and.(l%mapobj(nx0-1,ny0) == 0)
-          ok = ok .and. (l%map(nx0-1,ny0+1) == c_empty).and.(l%mapobj(nx0-1,ny0+1) == 0)
+          ok = (l%map(nx0-1,ny0) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0-1,ny0) == 0)
+          ok = ok .and. (l%map(nx0-1,ny0+1) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0-1,ny0+1) == 0)
           nx1 = nx0 - 1
           ny1 = ny0 + 1
        elseif (dir == mov_right) then
-          ok = (l%map(nx0,ny0-1) == c_empty).and.(l%mapobj(nx0,ny0-1) == 0)
-          ok = ok .and. (l%map(nx0+1,ny0-1) == c_empty).and.(l%mapobj(nx0+1,ny0-1) == 0)
+          ok = (l%map(nx0,ny0-1) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0,ny0-1) == 0)
+          ok = ok .and. (l%map(nx0+1,ny0-1) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0+1,ny0-1) == 0)
           nx1 = nx0 + 1
           ny1 = ny0 - 1
        elseif (dir == mov_left) then
-          ok = (l%map(nx0,ny0+1) == c_empty).and.(l%mapobj(nx0,ny0+1) == 0)
-          ok = ok .and. (l%map(nx0-1,ny0+1) == c_empty).and.(l%mapobj(nx0-1,ny0+1) == 0)
+          ok = (l%map(nx0,ny0+1) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0,ny0+1) == 0)
+          ok = ok .and. (l%map(nx0-1,ny0+1) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0-1,ny0+1) == 0)
           nx1 = nx0 - 1
           ny1 = ny0 + 1
        end if
     elseif (ityp0 == c_canister .and. ityp1 == c_cornerdn) then
        if (dir == mov_up) then
-          ok = (l%map(nx0-1,ny0) == c_empty).and.(l%mapobj(nx0-1,ny0) == 0)
-          ok = ok .and. (l%map(nx0-1,ny0-1) == c_empty).and.(l%mapobj(nx0-1,ny0-1) == 0)
+          ok = (l%map(nx0-1,ny0) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0-1,ny0) == 0)
+          ok = ok .and. (l%map(nx0-1,ny0-1) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0-1,ny0-1) == 0)
           nx1 = nx0 - 1
           ny1 = ny0 - 1
        elseif (dir == mov_down) then
-          ok = (l%map(nx0+1,ny0) == c_empty).and.(l%mapobj(nx0+1,ny0) == 0)
-          ok = ok .and. (l%map(nx0+1,ny0+1) == c_empty).and.(l%mapobj(nx0+1,ny0+1) == 0)
+          ok = (l%map(nx0+1,ny0) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0+1,ny0) == 0)
+          ok = ok .and. (l%map(nx0+1,ny0+1) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0+1,ny0+1) == 0)
           nx1 = nx0 + 1
           ny1 = ny0 + 1
        elseif (dir == mov_right) then
-          ok = (l%map(nx0,ny0+1) == c_empty).and.(l%mapobj(nx0,ny0+1) == 0)
-          ok = ok .and. (l%map(nx0+1,ny0+1) == c_empty).and.(l%mapobj(nx0+1,ny0+1) == 0)
+          ok = (l%map(nx0,ny0+1) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0,ny0+1) == 0)
+          ok = ok .and. (l%map(nx0+1,ny0+1) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0+1,ny0+1) == 0)
           nx1 = nx0 + 1
           ny1 = ny0 + 1
        elseif (dir == mov_left) then
-          ok = (l%map(nx0,ny0-1) == c_empty).and.(l%mapobj(nx0,ny0-1) == 0)
-          ok = ok .and. (l%map(nx0-1,ny0-1) == c_empty).and.(l%mapobj(nx0-1,ny0-1) == 0)
+          ok = (l%map(nx0,ny0-1) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0,ny0-1) == 0)
+          ok = ok .and. (l%map(nx0-1,ny0-1) == c_empty.or.l%map(nx0+1,ny0) == c_hole).and.(l%mapobj(nx0-1,ny0-1) == 0)
           nx1 = nx0 - 1
           ny1 = ny0 - 1
        end if
