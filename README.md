@@ -87,7 +87,8 @@ of objects in it.
 ### Sokoban mode
 
 Fudge can double as a sokoban game. To beat a sokoban level, rocks
-must be moved onto all **+** symbols in the map. Try the first level
+must be moved onto all **+** symbols in the map. A ***** character in
+the map denotes a **+** with a rock on it. Try the first level
 in classic sokoban by doing:
 
   ```
@@ -96,5 +97,10 @@ in classic sokoban by doing:
 
 More sokoban levels can be obtained from
 [sokoban.org](http://www.sokoban.org) or from [Jonathan Schaeffer's
-webpage at the the UofA](https://webdocs.cs.ualberta.ca/~games/Sokoban/). 
+webpage at the the UofA](https://webdocs.cs.ualberta.ca/~games/Sokoban/). The
+ASCII maps in the former can be converted to fudge format using:
+
+  ```
+  sed 's/[-_]/ /g;s/\$/o/g;s/\./+/g'
+  ```
 

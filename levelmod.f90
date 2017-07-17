@@ -201,7 +201,7 @@ contains
           nnx = nnx + 1
        end if
        if (is_iostat_end(ios)) exit 
-       if (c=="X".or.c=="o".or.c=="N".or.c=="O".or.c=="B") &
+       if (c=="X".or.c=="o".or.c=="*".or.c=="N".or.c=="O".or.c=="B") &
           nobj = nobj + 1
     end do 
 
@@ -283,13 +283,13 @@ contains
           l%map(nnx,nny) = c_cornerdn
        case("%")
           l%map(nnx,nny) = c_crystal
-       case("X","o","N","O","B")
+       case("X","o","*","N","O","B")
           nobj = nobj + 1
           l%npc(nobj)%x = nnx
           l%npc(nobj)%y = nny
           if (c=="X") then
              l%npc(nobj)%typ = c_chomper
-          elseif (c=="o") then
+          elseif (c=="o".or.c=="*") then
              l%npc(nobj)%typ = c_rock
           elseif (c=="N") then
              l%npc(nobj)%typ = c_naggon
@@ -298,7 +298,11 @@ contains
           elseif (c=="B") then
              l%npc(nobj)%typ = c_bomb
           end if
-          l%map(nnx,nny) = c_empty
+          if (c=="*") then
+             l%map(nnx,nny) = c_hole
+          else
+             l%map(nnx,nny) = c_empty
+          end if
           l%mapobj(nnx,nny) = nobj
        case("+")
           l%map(nnx,nny) = c_hole
