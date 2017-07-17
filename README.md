@@ -102,6 +102,8 @@ webpage at the the UofA](https://webdocs.cs.ualberta.ca/~games/Sokoban/). The
 ASCII maps in the former can be converted to fudge format using:
 
   ```
-  sed 's/[-_]/ /g;s/\$/o/g;s/\./+/g'
+  sed 's/_/#/g;s/-/ /g;s/\$/o/g;s/\./+/g'
   ```
+
+Toss in a few **N**s for extra fun.
 
