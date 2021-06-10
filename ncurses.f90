@@ -21,10 +21,10 @@ module ncurses
   logical(c_bool), parameter :: true  = .true.
   logical(c_bool), parameter :: false = .false.
 
-  integer(c_int),parameter :: KEY_DOWN  = O'402' 
-  integer(c_int),parameter :: KEY_UP    = O'403' 
-  integer(c_int),parameter :: KEY_LEFT  = O'404' 
-  integer(c_int),parameter :: KEY_RIGHT = O'405' 
+  integer(c_int),parameter :: KEY_DOWN  = int(O'402',c_int)
+  integer(c_int),parameter :: KEY_UP    = int(O'403',c_int)
+  integer(c_int),parameter :: KEY_LEFT  = int(O'404',c_int)
+  integer(c_int),parameter :: KEY_RIGHT = int(O'405',c_int)
 
   integer(c_short), parameter :: COLOR_BLACK   = 0
   integer(c_short), parameter :: COLOR_RED     = 1
