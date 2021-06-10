@@ -4,12 +4,12 @@
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation, either version 3 of the License, or (at
 ! your option) any later version.
-! 
+!
 ! fudge is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-! 
+!
 ! You should have received a copy of the GNU General Public License
 ! along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -74,8 +74,8 @@ module global
   integer(c_short), parameter :: col_red_red = 10
 
   character(len=1), parameter :: symbol(27) = (/" ","#","@","X","o",&
-     "<",">","^","v","0","1","2","3","4","5","6","7","8","9","/","\",& ! " 
-     "~","%","N","O","B","+"/) 
+     "<",">","^","v","0","1","2","3","4","5","6","7","8","9","/","\",& ! "
+     "~","%","N","O","B","+"/)
   integer(kind=c_short), parameter :: symcol(27) = (/&
      col_white_black,col_white_black,col_magenta_black,col_red_black,&
      col_cyan_black,col_blue_black,col_blue_black,col_blue_black,col_blue_black,&
@@ -201,7 +201,7 @@ contains
     y = y0+1
     call cstring("   Clear earth, crystals, bombs, naggons, and canisters to win.",msg)
     istat = mvinsstr(y,x+1,c_loc(msg))
-    
+
     y = y + 2
     call cstring(symbol(c_earth),msg)
     istat = attrset(symatt(c_earth))

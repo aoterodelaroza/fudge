@@ -4,12 +4,12 @@
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation, either version 3 of the License, or (at
 ! your option) any later version.
-! 
+!
 ! fudge is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-! 
+!
 ! You should have received a copy of the GNU General Public License
 ! along with this program.  If not, see <http://www.gnu.org/licenses/>.
 module levelmod
@@ -18,7 +18,7 @@ module levelmod
   implicit none
 
   private
-  
+
   type sprite
      integer :: id = 0
      integer :: typ = 0
@@ -47,7 +47,7 @@ module levelmod
 
   type level
      logical :: isinit = .false. ! is initialized
-     character(len=:), allocatable :: title 
+     character(len=:), allocatable :: title
      character(len=:), allocatable :: passwd
      character(len=:), allocatable :: errmsg ! error message
      integer :: nx = 0 ! map size
@@ -101,7 +101,7 @@ contains
   subroutine run_level(l,iexit)
     class(level), intent(inout) :: l
     integer, intent(out) :: iexit
-    
+
     integer*8 :: irate, imax, ilast, icur
     integer :: ich, ich0, istat
 
@@ -119,7 +119,7 @@ contains
           call system_clock(icur)
           if (icur < ilast) ilast = ilast - imax
        end do
-       ilast = icur 
+       ilast = icur
        nframe = nframe + 1
 
        call l%addframe_timers()
@@ -200,10 +200,10 @@ contains
        else
           nnx = nnx + 1
        end if
-       if (is_iostat_end(ios)) exit 
+       if (is_iostat_end(ios)) exit
        if (c=="X".or.c=="o".or.c=="*".or.c=="N".or.c=="O".or.c=="B") &
           nobj = nobj + 1
-    end do 
+    end do
 
     ! read the map information
     allocate(l%map(l%nx+2*borx,l%ny+2*bory))
@@ -230,12 +230,12 @@ contains
        if (is_iostat_eor(ios)) then
           nny = nny + 1
           nnx = 0 + borx
-          if (is_iostat_end(ios)) exit 
+          if (is_iostat_end(ios)) exit
           cycle
        else
           nnx = nnx + 1
        end if
-       if (is_iostat_end(ios)) exit 
+       if (is_iostat_end(ios)) exit
        select case (c)
        case(" ")
           l%map(nnx,nny) = c_empty
@@ -321,7 +321,7 @@ contains
           l%xtep(ntep(id),id) = nnx
           l%ytep(ntep(id),id) = nny
        end if
-    end do 
+    end do
 
     if (any((ntep /= 0) .and. (ntep /= 2))) then
        l%errmsg = "teleports must come in pairs"
@@ -386,7 +386,7 @@ contains
 
   subroutine render_level(l)
     class(level), intent(inout) :: l
-    
+
     integer :: ix, iy, istat, id, i
     character(kind=c_char,len=1), target :: c(2)
     character(kind=c_char,len=1), allocatable, target :: msg(:)
@@ -527,7 +527,7 @@ contains
 
   subroutine addframe_timers(l)
     class(level), intent(inout) :: l
-    
+
     l%ntime = l%ntime + 1
     if (any(l%npc(1:l%nnpc)%typ == c_bomb)) &
        l%ntime_bomb = l%ntime_bomb + 1
@@ -555,7 +555,7 @@ contains
        id = l%nspr + 1
        l%nspr = 2 * l%nspr
     end if
-    
+
     associate (s => l%spr(id))
       s%id = id
       s%typ = tspr
@@ -639,7 +639,7 @@ contains
     logical :: ok, tailtel
     integer :: ityp0, ityp1, nx0, nx1, ny0, ny1, iobj0, iobj1
     integer :: id
-    
+
     ityp0 = ch%typ
     nx0 = ch%x
     ny0 = ch%y
@@ -767,7 +767,7 @@ contains
        ch%x = nx1
        ch%y = ny1
     end if
-    
+
     if (tailtel) then
        ok = ch%push(l,dir)
     end if
@@ -811,7 +811,7 @@ contains
     integer(c_short), intent(in) :: color
     character(len=1), intent(in) :: char
     integer*8, intent(in) :: nf, mf
-    
+
     integer :: ntot, ndraw, iy, ix, idraw, istat
     character(kind=c_char,len=1), target :: c(2)
 
@@ -838,10 +838,10 @@ contains
   subroutine realloc_sprite(a,nnew)
     type(sprite), intent(inout), allocatable :: a(:)
     integer, intent(in) :: nnew
-    
+
     type(sprite), allocatable :: temp(:)
     integer :: nold
-    
+
     if (.not.allocated(a)) then
        allocate(a(nnew))
        return
@@ -849,7 +849,7 @@ contains
     nold = size(a)
     if (nold == nnew) return
     allocate(temp(nnew))
-    
+
     temp(1:min(nnew,nold)) = a(1:min(nnew,nold))
     call move_alloc(temp,a)
 

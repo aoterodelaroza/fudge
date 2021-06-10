@@ -4,12 +4,12 @@
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation, either version 3 of the License, or (at
 ! your option) any later version.
-! 
+!
 ! fudge is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-! 
+!
 ! You should have received a copy of the GNU General Public License
 ! along with this program.  If not, see <http://www.gnu.org/licenses/>.
 module ncurses
@@ -35,13 +35,13 @@ module ncurses
   integer(c_short), parameter :: COLOR_CYAN    = 6
   integer(c_short), parameter :: COLOR_WHITE   = 7
 
-  integer(c_long), parameter :: A_BLINK        =  524288_c_long       
-  integer(c_long), parameter :: A_BOLD         =  2097152_c_long      
-  integer(c_long), parameter :: A_INVIS        =  8388608_c_long      
-  integer(c_long), parameter :: A_NORMAL       =  0_c_long            
-  integer(c_long), parameter :: A_PROTECT      =  16777216_c_long     
-  integer(c_long), parameter :: A_REVERSE      =  262144_c_long       
-  integer(c_long), parameter :: A_UNDERLINE    =  131072_c_long       
+  integer(c_long), parameter :: A_BLINK        =  524288_c_long
+  integer(c_long), parameter :: A_BOLD         =  2097152_c_long
+  integer(c_long), parameter :: A_INVIS        =  8388608_c_long
+  integer(c_long), parameter :: A_NORMAL       =  0_c_long
+  integer(c_long), parameter :: A_PROTECT      =  16777216_c_long
+  integer(c_long), parameter :: A_REVERSE      =  262144_c_long
+  integer(c_long), parameter :: A_UNDERLINE    =  131072_c_long
   integer(c_long), parameter :: A_DIM          =  1048576_c_long
   integer(c_long), parameter :: A_HORIZONTAL   =  33554432_c_long
   integer(c_long), parameter :: A_LEFT         =  67108864_c_long
@@ -57,17 +57,17 @@ module ncurses
        import :: c_ptr
        type(c_ptr) :: initscr
      end function initscr
-     ! int endwin(void);  
+     ! int endwin(void);
      function endwin() bind(c)
        import :: c_int
        integer(c_int) :: endwin
      end function endwin
-     ! int start_color(void);  
+     ! int start_color(void);
      function start_color() bind(c)
        import :: c_int
        integer(c_int) :: start_color
      end function start_color
-     ! int cbreak(void);  
+     ! int cbreak(void);
      function cbreak() bind(c)
        import :: c_int
        integer(c_int) :: cbreak

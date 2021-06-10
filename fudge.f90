@@ -4,17 +4,17 @@
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation, either version 3 of the License, or (at
 ! your option) any later version.
-! 
+!
 ! fudge is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-! 
+!
 ! You should have received a copy of the GNU General Public License
 ! along with this program.  If not, see <http://www.gnu.org/licenses/>.
 program fudge
   use global
-  use levelmod 
+  use levelmod
   use ncurses
   use iso_c_binding
   implicit none
@@ -35,7 +35,7 @@ program fudge
      iarg = 0
      do while (iarg < argc)
         iarg = iarg + 1
-        call getarg(iarg,argv)    
+        call getarg(iarg,argv)
         if (argv(1:2) == "-h") then
            write (*,*)
            write (*,'("Fudge: a text-based puzzle game about a radioactive dog seeking vengeance.")')
@@ -44,9 +44,9 @@ program fudge
            write (*,*)
            write (*,'("Options:")')
            write (*,*)
-           write (*,'(" -h        This help message")') 
-           write (*,'(" -f FILE   Load the map in file")') 
-           write (*,'(" -p PASSWD Skip to a level using a password")') 
+           write (*,'(" -h        This help message")')
+           write (*,'(" -f FILE   Load the map in file")')
+           write (*,'(" -p PASSWD Skip to a level using a password")')
            write (*,*)
            return
         elseif (argv(1:2) == "-f") then
